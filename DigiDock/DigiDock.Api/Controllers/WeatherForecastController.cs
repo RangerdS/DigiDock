@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace DigiDock.Api.Controllers
 {
@@ -10,6 +11,8 @@ namespace DigiDock.Api.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
+
+
 
         private readonly ILogger<WeatherForecastController> _logger;
 
@@ -28,6 +31,7 @@ namespace DigiDock.Api.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+
         }
     }
 }

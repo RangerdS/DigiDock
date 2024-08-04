@@ -1,4 +1,5 @@
 ﻿using DigiDock.Base.Entity;
+using DigiDock.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace DigiDock.Data.Context
@@ -12,6 +13,7 @@ namespace DigiDock.Data.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
 
         /*

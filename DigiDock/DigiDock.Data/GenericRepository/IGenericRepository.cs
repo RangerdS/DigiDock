@@ -9,12 +9,12 @@ namespace DigiDock.Data.GenericRepository
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        Task Save();
-        Task<List<TEntity>> GetAll();
-        Task<TEntity?> GetById(long Id);
-        Task Insert(TEntity entity);
-        Task Update(TEntity entity);
-        Task Delete(TEntity entity);
-        Task Delete(long Id);
+        Task SaveAsync();
+        Task<List<TEntity>> GetAllAsync();
+        Task<TEntity?> GetByIdAsync(long Id);
+        Task InsertAsync(TEntity entity);
+        Task UpdateAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
+        Task DeleteAsync(long Id);
     }
 }

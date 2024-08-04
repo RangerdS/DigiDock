@@ -1,34 +1,69 @@
-using DigiDock.Data.Context;
-using Microsoft.EntityFrameworkCore;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Hangfire;
+using Hangfire.Logging;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
+using System.Configuration;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddDbContext<DigiDockMsDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+namespace DigiDock.Api
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+
+            try
+            {
+                var host = CreateHostBuilder(args, configuration).Build();
+
+                using (var scope = host.Services.CreateScope())
+                {
+                    var backgroundJobs = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
+                    backgroundJobs.Enqueue(() => Log.Information("Starting up the host"));
+                }
+
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                using (var scope = CreateHostBuilder(args, configuration).Build().Services.CreateScope())
+                {
+                    var backgroundJobs = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
+                    backgroundJobs.Enqueue(() => Log.Fatal(ex, "Host terminated unexpectedly"));
+                }
+            }
+            finally
+            {
+                using (var scope = CreateHostBuilder(args, configuration).Build().Services.CreateScope())
+                {
+                    var backgroundJobs = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
+                    backgroundJobs.Enqueue(() => Log.CloseAndFlush());
+                }
+            }
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>
+            Host.CreateDefaultBuilder(args)
+                .UseSerilog()
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddConfiguration(configuration);
+                });
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
