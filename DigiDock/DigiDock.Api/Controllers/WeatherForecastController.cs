@@ -4,6 +4,7 @@ using Serilog;
 namespace DigiDock.Api.Controllers
 {
     [ApiController]
+    [NonController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {

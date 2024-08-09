@@ -14,5 +14,7 @@ namespace DigiDock.Data.UnitOfWork
         Task CompleteWithTransactionAsync();
 
         IGenericRepository<Product> ProductRepository { get; }
+        IGenericRepository<User> UserRepository { get; }
+        IGenericRepository<UserLogin> UserLoginRepository { get; }
     }
 }

@@ -1,12 +1,9 @@
 ﻿using DigiDock.Base.Entity;
 using DigiDock.Data.Context;
 using DigiDock.Data.Extensions;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace DigiDock.Data.GenericRepository
 {
@@ -32,7 +29,7 @@ namespace DigiDock.Data.GenericRepository
                 .Active()
                 .ToListAsync();
         }
-
+        // fill here add:  Where 
         public async Task<TEntity?> GetByIdAsync(long Id)
         {
             return await context.Set<TEntity>()
@@ -50,6 +47,15 @@ namespace DigiDock.Data.GenericRepository
                 throw new ArgumentNullException(nameof(entity));
             }
 
+            var currentDate = DateTime.UtcNow;
+
+            entity.CreateUserId = 1; // fill here change this
+            entity.UpdateUserId = 1;
+            entity.IsActive = true;
+            entity.IsDeleted = false;
+            entity.CreatedAt = currentDate;
+            entity.UpdatedAt = currentDate;
+
             await context.Set<TEntity>().AddAsync(entity);
         }
 
@@ -63,14 +69,27 @@ namespace DigiDock.Data.GenericRepository
             context.Set<TEntity>().Update(entity);
             await SaveAsync();
         }
+        public async Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> expression, params string[] includes)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(expression);
+        }
 
         public async Task DeleteAsync(TEntity entity)
         {
+            // fill here
             throw new NotImplementedException();
         }
 
         public async Task DeleteAsync(long Id)
         {
+            // fill here
             throw new NotImplementedException();
         }
     }

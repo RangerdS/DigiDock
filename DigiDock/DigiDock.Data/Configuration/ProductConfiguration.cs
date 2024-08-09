@@ -15,32 +15,38 @@ namespace DigiDock.Data.Configuration
         {
             builder.ToTable("Products", "dbo");
 
-            builder.HasKey(p => p.Id);
+            builder.ConfigureBaseEntity();
 
-            builder.Property(p => p.Name)
+            builder.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(p => p.Features)
+            builder.Property(x => x.Features)
+                .IsRequired()
                 .HasMaxLength(500);
 
-            builder.Property(p => p.Description)
+            builder.Property(x => x.Description)
+                .IsRequired()
                 .HasMaxLength(1000);
 
-            builder.Property(p => p.Price)
+            builder.Property(x => x.Price)
+                .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
-            builder.Property(p => p.RewardPointsPercentage)
+            builder.Property(x => x.RewardPointsPercentage)
+                .IsRequired()
                 .HasColumnType("decimal(5,2)");
 
-            builder.Property(p => p.MaxRewardPoints)
+            builder.Property(x => x.MaxRewardPoints)
+                .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
             // Many-to-Many relationship configuration
+            // fill here
             /*builder
-                .HasMany(p => p.ProductCategories)
-                .WithOne(pc => pc.Product)
-                .HasForeignKey(pc => pc.ProductId);*/ // fill here
+                .HasMany(x => x.ProductCategories)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);*/ // fill here
         }
     }
 }

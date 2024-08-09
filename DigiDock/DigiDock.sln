@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiDock.Api", "DigiDock.Api\DigiDock.Api.csproj", "{35A0C852-4E03-491C-BB91-0E95A55213CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigiDock.Api", "DigiDock.Api\DigiDock.Api.csproj", "{35A0C852-4E03-491C-BB91-0E95A55213CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiDock.Base", "DigiDock.Base\DigiDock.Base.csproj", "{8D80E784-90A4-4F53-892A-6D262FEC8B97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigiDock.Base", "DigiDock.Base\DigiDock.Base.csproj", "{8D80E784-90A4-4F53-892A-6D262FEC8B97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiDock.Data", "DigiDock.Data\DigiDock.Data.csproj", "{752721E7-7E7B-4500-AA14-8599544CCCD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigiDock.Data", "DigiDock.Data\DigiDock.Data.csproj", "{752721E7-7E7B-4500-AA14-8599544CCCD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiDock.Schema", "DigiDock.Schema\DigiDock.Schema.csproj", "{C8DAC095-D313-4478-AC51-791EAD61647C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigiDock.Schema", "DigiDock.Schema\DigiDock.Schema.csproj", "{C8DAC095-D313-4478-AC51-791EAD61647C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiDock.Business", "DigiDock.Business\DigiDock.Business.csproj", "{E1575A58-4B17-4E3A-8B65-B480BA9BCA7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigiDock.Business", "DigiDock.Business\DigiDock.Business.csproj", "{E1575A58-4B17-4E3A-8B65-B480BA9BCA7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiDock.Test", "DigiDock.Test\DigiDock.Test.csproj", "{56A6E057-7D3F-4FC7-9A5E-97A4B94D31B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E1575A58-4B17-4E3A-8B65-B480BA9BCA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1575A58-4B17-4E3A-8B65-B480BA9BCA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1575A58-4B17-4E3A-8B65-B480BA9BCA7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A6E057-7D3F-4FC7-9A5E-97A4B94D31B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A6E057-7D3F-4FC7-9A5E-97A4B94D31B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A6E057-7D3F-4FC7-9A5E-97A4B94D31B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A6E057-7D3F-4FC7-9A5E-97A4B94D31B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

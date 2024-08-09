@@ -14,12 +14,16 @@ namespace DigiDock.Data.UnitOfWork
         private readonly DigiDockMsDBContext context;
         private bool disposed = false;
         public IGenericRepository<Product> ProductRepository { get; private set; }
+        public IGenericRepository<User> UserRepository { get; private set; }
+        public IGenericRepository<UserLogin> UserLoginRepository { get; private set; }
 
         public UnitOfWork(DigiDockMsDBContext context)
         {
             this.context = context;
 
             ProductRepository = new GenericRepository<Product>(this.context);
+            UserRepository = new GenericRepository<User>(this.context);
+            UserLoginRepository = new GenericRepository<UserLogin>(this.context);
         }
 
 

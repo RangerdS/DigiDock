@@ -1,4 +1,6 @@
-﻿using Hangfire;
+﻿using DigiDock.Api.Services;
+using DigiDock.Schema.Log;
+using Hangfire;
 using Serilog;
 using System.Diagnostics;
 using System.Text;
@@ -8,22 +10,30 @@ namespace DigiDock.Api.MiddleWares
     public class RequestLoggingMiddleware
     {
         private readonly RequestDelegate next;
+        private readonly LogQueueService logQueueService;
 
-        public RequestLoggingMiddleware(RequestDelegate next)
+        public RequestLoggingMiddleware(RequestDelegate next, LogQueueService logQueueService)
         {
             this.next = next;
+            this.logQueueService = logQueueService;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
             var stopwatch = Stopwatch.StartNew();
 
+            bool isHangfireRequest = IsHangfireRequest(context); 
+
             context.Request.EnableBuffering();
             var requestBody = await ReadRequestBodyAsync(context.Request);
-            BackgroundJob.Enqueue(() => Log.Information("HTTP Request: {Method} {Path} {Body}",
-                context.Request.Method,
-                context.Request.Path,
-                requestBody));
+            var ipAddress = context.Connection.RemoteIpAddress?.ToString();
+
+            // fill here add rabbitMQ E0
+            if (!isHangfireRequest)
+            {
+                var requestLogMessage = LogMessage.CreateRequestLog(ipAddress, context.Request.Method, context.Request.Path, requestBody);
+                logQueueService.EnqueueLog("Information", requestLogMessage.ToString());
+            }
 
             var originalBodyStream = context.Response.Body;
             using (var responseBody = new MemoryStream())
@@ -35,13 +45,20 @@ namespace DigiDock.Api.MiddleWares
                 stopwatch.Stop();
 
                 var responseBodyText = await ReadResponseBodyAsync(context.Response);
-                BackgroundJob.Enqueue(() => Log.Information("HTTP Response: {StatusCode} {Body} in {ElapsedMilliseconds}ms",
-                    context.Response.StatusCode,
-                    responseBodyText,
-                    stopwatch.ElapsedMilliseconds));
+                if (!isHangfireRequest)
+                {
+                    var responseLogMessage = LogMessage.CreateResponseLog(context.Response.StatusCode, responseBodyText, stopwatch.ElapsedMilliseconds);
+                    logQueueService.EnqueueLog("Information", responseLogMessage.ToString());
+                }
 
                 await responseBody.CopyToAsync(originalBodyStream);
             }
+        }
+
+        private bool IsHangfireRequest(HttpContext context)
+        {
+            // Hangfire job design
+            return context.Request.Path.StartsWithSegments("/hangfire");
         }
 
         private async Task<string> ReadRequestBodyAsync(HttpRequest request)

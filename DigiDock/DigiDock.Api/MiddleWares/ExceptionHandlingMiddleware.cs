@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using DigiDock.Base.Responses;
+using Hangfire;
 using Serilog;
 using System.Net;
 
@@ -31,14 +32,16 @@ namespace DigiDock.Api.MiddleWares
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            // fill here : add to db error
 
-            var response = new
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = "An unexpected error occurred.",
-                Detailed = exception.Message
-            };
+            var response = new ApiResponse<string>(
+                context.Response.StatusCode,
+                false,
+                "An unexpected error occurred.",
+                exception.Message
 
+            );
+            // fill here use ApiResponse ??
             return context.Response.WriteAsJsonAsync(response);
         }
     }

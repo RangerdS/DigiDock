@@ -1,15 +1,13 @@
-﻿using DigiDock.Base.Entity;
+﻿using DigiDock.Base.Requests;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DigiDock.Data.Domain
+namespace DigiDock.Schema.Requests
 {
-    [Table("Products", Schema = "dbo")]
-    public class Product : BaseEntity
+    public class ProductRequest : BaseRequest
     {
         public string Name { get; set; }
         public string Features { get; set; }
@@ -18,6 +16,5 @@ namespace DigiDock.Data.Domain
         public int Stock { get; set; }
         public decimal RewardPointsPercentage { get; set; }
         public decimal MaxRewardPoints { get; set; }
-        //public List<ProductCategory> ProductCategories { get; set; } // fill here
     }
 }
