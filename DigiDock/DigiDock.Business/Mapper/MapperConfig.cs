@@ -16,6 +16,14 @@ namespace DigiDock.Business.Mapper
         {
             CreateMap<Product, ProductResponse>();
             CreateMap<ProductRequest, Product>();
+            CreateMap<ProductUpdateRequest, Product>();
+
+            CreateMap<SignInRequest, User>();
+            CreateMap<SignInRequest, UserPassword>();
+
+            CreateMap<CouponCreateRequest, Coupon>();
+            CreateMap<CouponUpdateRequest, Coupon>();
+            CreateMap<Coupon, CouponResponse>();
         }
     }
 }

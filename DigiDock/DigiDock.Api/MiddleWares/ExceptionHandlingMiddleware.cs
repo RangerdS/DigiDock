@@ -1,4 +1,5 @@
-﻿using DigiDock.Base.Responses;
+﻿using DigiDock.Business.Services;
+using DigiDock.Base.Responses;
 using Hangfire;
 using Serilog;
 using System.Net;
@@ -11,7 +12,7 @@ namespace DigiDock.Api.MiddleWares
 
         public ExceptionHandlingMiddleware(RequestDelegate next)
         {
-            this.next = next;
+            this.next = next ?? throw new ArgumentNullException(nameof(next));
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -22,26 +23,19 @@ namespace DigiDock.Api.MiddleWares
             }
             catch (Exception ex)
             {
-                BackgroundJob.Enqueue(() =>
-                    Log.Error(ex, "An unhandled exception has occurred while executing the request."));
                 await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            // fill here : add to db error
 
-            var response = new ApiResponse<string>(
-                context.Response.StatusCode,
-                false,
-                "An unexpected error occurred.",
-                exception.Message
+            BackgroundJob.Enqueue(() =>
+                Log.Error(ex, "An unhandled exception has occurred while executing the request."));
 
-            );
-            // fill here use ApiResponse ??
+            var response = ApiResponse.ErrorResponse("An unexpected error occurred.", context.Response.StatusCode);
             return context.Response.WriteAsJsonAsync(response);
         }
     }

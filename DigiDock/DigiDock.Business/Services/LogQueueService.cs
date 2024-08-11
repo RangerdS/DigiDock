@@ -1,22 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Exceptions;
 using Serilog;
+using System.Net.Sockets;
 using System.Text;
 
-namespace DigiDock.Api.Services
+namespace DigiDock.Business.Services
 {
     public class LogQueueService : IDisposable
     {
         private readonly IConfiguration configuration;
         private readonly LogService logService;
-        private readonly IConnection connection;
-        private readonly IModel channel;
+        private IConnection connection;
+        private IModel channel;
 
         public LogQueueService(IConfiguration configuration, LogService logService)
         {
-            this.configuration = configuration;
-            this.logService = logService;
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.logService = logService ?? throw new ArgumentNullException(nameof(logService));
 
             var factory = new ConnectionFactory()
             {
@@ -25,13 +29,24 @@ namespace DigiDock.Api.Services
                 Password = configuration["RabbitMQ:Password"]
             };
 
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
-            channel.QueueDeclare(queue: configuration["RabbitMQ:LogQueueName"],
-                                  durable: true,
-                                  exclusive: false,
-                                  autoDelete: false,
-                                  arguments: null);
+            var retryPolicy = Policy
+                .Handle<BrokerUnreachableException>()
+                .Or<SocketException>()
+                .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (exception, timeSpan, retryCount, context) =>
+                {
+                    Log.Error($"RabbitMQ connection attempt {retryCount} failed. Waiting {timeSpan} before next retry. Exception: {exception.Message}");
+                });
+
+            retryPolicy.Execute(() =>
+            {
+                connection = factory.CreateConnection();
+                channel = connection.CreateModel();
+                channel.QueueDeclare(queue: configuration["RabbitMQ:LogQueueName"],
+                                      durable: true,
+                                      exclusive: false,
+                                      autoDelete: false,
+                                      arguments: null);
+            });
         }
 
         public void EnqueueLog(string logLevel, string message)

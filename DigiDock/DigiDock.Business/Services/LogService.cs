@@ -1,7 +1,7 @@
 ﻿using Serilog;
 using System.Threading.Tasks;
 
-namespace DigiDock.Api.Services
+namespace DigiDock.Business.Services
 {
     public class LogService
     {

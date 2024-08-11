@@ -41,12 +41,13 @@ namespace DigiDock.Data.Configuration
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
-            // Many-to-Many relationship configuration
-            // fill here
-            /*builder
-                .HasMany(x => x.ProductCategories)
-                .WithOne(x => x.Product)
-                .HasForeignKey(x => x.ProductId);*/ // fill here
+            builder.HasMany(p => p.ProductCategoryMaps)
+                   .WithOne(pc => pc.Product)
+                   .HasForeignKey(pc => pc.ProductId);
+
+            builder.HasMany(p => p.OrderDetails)
+                   .WithOne(od => od.Product)
+                   .HasForeignKey(od => od.ProductId);
         }
     }
 }

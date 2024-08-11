@@ -35,6 +35,11 @@ namespace DigiDock.Base.Responses
         {
             return new ApiResponse(500, false, message);
         }
+
+        public static ApiResponse ErrorResponse(string message, int statusCode)
+        {
+            return new ApiResponse(statusCode, false, message);
+        }
     }
 
     public class ApiResponse<T> : ApiResponse
@@ -58,6 +63,11 @@ namespace DigiDock.Base.Responses
         public static new ApiResponse<T> ErrorResponse(string message)
         {
             return new ApiResponse<T>(500, false, message, default);
+        }
+
+        public static new ApiResponse<T> ErrorResponse(string message, int statusCode)
+        {
+            return new ApiResponse<T>(statusCode, false, message, default);
         }
     }
 }

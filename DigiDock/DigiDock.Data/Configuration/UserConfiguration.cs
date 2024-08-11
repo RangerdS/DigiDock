@@ -41,6 +41,9 @@ namespace DigiDock.Data.Configuration
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
+            builder.HasIndex(u => u.Email)
+                .IsUnique();
+
 
             builder.HasMany(u => u.UserPasswords)
                    .WithOne(up => up.User)

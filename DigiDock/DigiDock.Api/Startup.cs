@@ -11,7 +11,7 @@ using MediatR;
 using DigiDock.Business.Cqrs;
 using DigiDock.Business.Command.ProductCommands;
 using DigiDock.Data.UnitOfWork;
-using DigiDock.Api.Services;
+using DigiDock.Business.Services;
 using DigiDock.Base.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -162,7 +162,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevelopment())
+        if (env.IsDevelopment() || true)
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();

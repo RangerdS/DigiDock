@@ -4,8 +4,9 @@ using RabbitMQ.Client;
 using System.Text;
 using MediatR;
 using DigiDock.Business.Cqrs;
+using Microsoft.Extensions.Configuration;
 
-namespace DigiDock.Api.Services
+namespace DigiDock.Business.Services
 {
     public class EmailQueueService : IDisposable
     {
@@ -15,10 +16,11 @@ namespace DigiDock.Api.Services
         private readonly IModel channel;
         private readonly IMediator mediator;
 
-        public EmailQueueService(IConfiguration configuration, EmailService emailService)
+        public EmailQueueService(IConfiguration configuration, EmailService emailService, IMediator mediator)
         {
-            this.configuration = configuration;
-            this.emailService = emailService;
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
             var factory = new ConnectionFactory()
             {
@@ -70,7 +72,15 @@ namespace DigiDock.Api.Services
                 var message = Encoding.UTF8.GetString(body);
                 var emailMessage = JsonConvert.DeserializeObject<dynamic>(message);
 
-                await emailService.SendEmailAsync((string)emailMessage.ToEmail, (string)emailMessage.Subject, (string)emailMessage.Body);
+                try
+                {
+                    await emailService.SendEmailAsync((string)emailMessage.ToEmail, (string)emailMessage.Subject, (string)emailMessage.Body);
+                }
+                catch (Exception ex)
+                {
+                    EnqueueEmailTo((string)emailMessage.ToEmail, (string)emailMessage.Subject, (string)emailMessage.Body);
+                }
+
             };
 
             channel.BasicConsume(queue: configuration["RabbitMQ:EmailQueueName"],

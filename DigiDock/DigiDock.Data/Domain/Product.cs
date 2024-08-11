@@ -18,6 +18,8 @@ namespace DigiDock.Data.Domain
         public int Stock { get; set; }
         public decimal RewardPointsPercentage { get; set; }
         public decimal MaxRewardPoints { get; set; }
-        //public List<ProductCategory> ProductCategories { get; set; } // fill here
+
+        public List<ProductCategoryMap> ProductCategoryMaps { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -19,8 +19,8 @@ namespace DigiDock.Business.Query.ProductQueries
         private readonly IMapper mapper;
         public GetAllUserEmailListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
+            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<ApiResponse<List<String>>> Handle(GetAllUserEmailListQuery request, CancellationToken cancellationToken)

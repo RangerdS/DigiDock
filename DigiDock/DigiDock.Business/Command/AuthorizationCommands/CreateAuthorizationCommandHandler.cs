@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using DigiDock.Base.Helpers;
 using DigiDock.Base.Responses;
 using DigiDock.Business.Token;
 using DigiDock.Data.Domain;
 using DigiDock.Data.UnitOfWork;
 using DigiDock.Schema.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +16,15 @@ using static DigiDock.Business.Cqrs.Authorization;
 
 namespace DigiDock.Business.Command.AuthorizationCommands
 {
-    public class AuthorizationCommandHandler : IRequestHandler<CreateAuthorizationTokenCommand, ApiResponse<AuthorizationResponse>>
+    public class CreateAuthorizationCommandHandler : IRequestHandler<CreateAuthorizationTokenCommand, ApiResponse<AuthorizationResponse>>
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
         private ITokenService tokenService;
 
-        public AuthorizationCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService)
+        public CreateAuthorizationCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService)
         {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
-            this.tokenService = tokenService;
+            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         }
 
         public async Task<ApiResponse<AuthorizationResponse>> Handle(CreateAuthorizationTokenCommand request, CancellationToken cancellationToken)
@@ -39,7 +39,7 @@ namespace DigiDock.Business.Command.AuthorizationCommands
                         ? "Password is wrong."
                         : "User is not active.";
 
-                await LogFailedLogin(request, user?.Id ?? 0, errorMessage + $" Email: {request.Request.Email}");
+                await LogFailedLogin(request, user?.Id ?? 1, errorMessage + $" Email: {request.Request.Email}");
 
                 return ApiResponse<AuthorizationResponse>.ErrorResponse("Invalid user informations. Check your username or password.");
             }
@@ -65,6 +65,7 @@ namespace DigiDock.Business.Command.AuthorizationCommands
                 ErrorMessage = errorMessage,
                 UserId = userId
             });
+            await unitOfWork.CompleteAsync();
         }
 
         private async Task LogSuccessfulLogin(CreateAuthorizationTokenCommand request, long userId)
@@ -76,22 +77,12 @@ namespace DigiDock.Business.Command.AuthorizationCommands
                 ErrorMessage = "Success",
                 UserId = userId
             });
+            await unitOfWork.CompleteAsync();
         }
 
         private bool IsPasswordValid(User user, string password)
         {
-            return user.UserPasswords.LastOrDefault()?.Password == CreateMD5(password);
-        }
-
-        private string CreateMD5(string input)
-        {
-            using (var md5 = System.Security.Cryptography.MD5.Create())
-            {
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                return Convert.ToHexString(hashBytes).ToLower();
-            }
+            return user.UserPasswords.LastOrDefault()?.Password == HashHelper.CreateMD5(password);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DigiDock.Base.Token;
 using DigiDock.Data.Domain;
+using DigiDock.Data.UnitOfWork;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace DigiDock.Business.Token
 
         public TokenService(JwtConfig jwtConfig)
         {
-            this.jwtConfig = jwtConfig;
+            this.jwtConfig = jwtConfig ?? throw new ArgumentNullException(nameof(jwtConfig));
         }
 
         public async Task<string> GetToken(User user)

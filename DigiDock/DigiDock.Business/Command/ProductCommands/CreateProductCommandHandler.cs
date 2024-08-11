@@ -19,8 +19,8 @@ namespace DigiDock.Business.Command.ProductCommands
         private readonly IMapper mapper;
         public CreateProductCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
+            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<ApiResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)

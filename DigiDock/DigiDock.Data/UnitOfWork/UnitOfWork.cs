@@ -1,6 +1,9 @@
-﻿using DigiDock.Data.Context;
+﻿using DigiDock.Base.Token;
+using DigiDock.Data.Context;
 using DigiDock.Data.Domain;
 using DigiDock.Data.GenericRepository;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +15,24 @@ namespace DigiDock.Data.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DigiDockMsDBContext context;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private bool disposed = false;
         public IGenericRepository<Product> ProductRepository { get; private set; }
         public IGenericRepository<User> UserRepository { get; private set; }
+        public IGenericRepository<UserPassword> UserPasswordRepository { get; private set; }
         public IGenericRepository<UserLogin> UserLoginRepository { get; private set; }
+        public IGenericRepository<Coupon> CouponRepository { get; private set; }
 
-        public UnitOfWork(DigiDockMsDBContext context)
+        public UnitOfWork(DigiDockMsDBContext context, IHttpContextAccessor httpContextAccessor)
         {
-            this.context = context;
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 
-            ProductRepository = new GenericRepository<Product>(this.context);
-            UserRepository = new GenericRepository<User>(this.context);
-            UserLoginRepository = new GenericRepository<UserLogin>(this.context);
+            ProductRepository = new GenericRepository<Product>(this.context, httpContextAccessor);
+            UserRepository = new GenericRepository<User>(this.context, httpContextAccessor);
+            UserPasswordRepository = new GenericRepository<UserPassword>(this.context, httpContextAccessor);
+            UserLoginRepository = new GenericRepository<UserLogin>(this.context, httpContextAccessor);
+            CouponRepository = new GenericRepository<Coupon>(this.context, httpContextAccessor);
         }
 
 
@@ -34,20 +43,25 @@ namespace DigiDock.Data.UnitOfWork
 
         public async Task CompleteWithTransactionAsync()
         {
-            using (var dbTransaction = await context.Database.BeginTransactionAsync())
+            var strategy = context.Database.CreateExecutionStrategy();
+
+            await strategy.ExecuteAsync(async () =>
             {
-                try
+                using (var dbTransaction = await context.Database.BeginTransactionAsync())
                 {
-                    await context.SaveChangesAsync();
-                    await dbTransaction.CommitAsync();
+                    try
+                    {
+                        await context.SaveChangesAsync();
+                        await dbTransaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await dbTransaction.RollbackAsync();
+                        Console.WriteLine(ex);
+                        throw;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    await dbTransaction.RollbackAsync();
-                    Console.WriteLine(ex);
-                    throw;
-                }
-            }
+            });
         }
 
         protected virtual void Dispose(bool disposing)
