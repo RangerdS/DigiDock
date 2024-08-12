@@ -1,377 +1,376 @@
-# DigiDock Yönetimi API
+# DigiDock Management API
 
-DigiDock Yönetimi API'si, dijital ürünlerin yönetimi için çeşitli uç noktalar sağlar.
+The DigiDock Management API provides various endpoints for managing digital products.
 
-## 1. Kupon Kodu Yayınla
+## 1. Publish Coupon Code
 
 **Endpoint:** `POST /admin/api/Advertise/PublishCouponCode`
 
-### Parametreler:
+### Parameters:
 
-| Parametre | Tip     | Açıklama                     |
-| :-------- | :------ | :--------------------------- |
-| `code`    | `integer` | **Gerekli**. Yayınlanacak kupon kodu. |
+| Parameter | Type     | Description                     |
+| :-------- | :------ | :----------------------------- |
+| `code`    | `integer` | **Required**. Coupon code to be published. |
 
-### Açıklama:
-Verilen kupon kodunu yayınlar.
+### Description:
+Publishes the given coupon code.
 
 ---
 
-## 2. Kullanıcı Girişi
+## 2. User Login
 
 **Endpoint:** `POST /api/Authorization/Login`
 
-### Parametreler:
+### Parameters:
 
-| Parametre | Tip      | Açıklama                    |
-| :-------- | :------- | :-------------------------- |
-| `Email`   | `string` | **Gerekli**. Kullanıcı e-postası. |
-| `Password`| `string` | **Gerekli**. Kullanıcı şifresi.  |
+| Parameter | Type      | Description                    |
+| :-------- | :------- | :---------------------------- |
+| `Email`   | `string` | **Required**. User's email address. |
+| `Password`| `string` | **Required**. User's password.  |
 
-### Açıklama:
-Kullanıcı giriş işlemi gerçekleştirir.
+### Description:
+Performs user login.
 
 ---
 
-## 3. Kullanıcı Kayıt
+## 3. User Registration
 
 **Endpoint:** `POST /api/Authorization/SignIn`
 
-### Parametreler:
+### Parameters:
 
-| Parametre   | Tip      | Açıklama                     |
-| :---------- | :------- | :--------------------------- |
-| `FirstName` | `string` | **Gerekli**. Kullanıcının adı.  |
-| `LastName`  | `string` | **Gerekli**. Kullanıcının soyadı.  |
-| `Email`     | `string` | **Gerekli**. Kullanıcı e-postası. |
-| `Password`  | `string` | **Gerekli**. Kullanıcı şifresi. |
+| Parameter   | Type      | Description                     |
+| :---------- | :------- | :----------------------------- |
+| `FirstName` | `string` | **Required**. User's first name.  |
+| `LastName`  | `string` | **Required**. User's last name.  |
+| `Email`     | `string` | **Required**. User's email address. |
+| `Password`  | `string` | **Required**. User's password. |
 
-### Açıklama:
-Yeni bir kullanıcı kaydı oluşturur.
+### Description:
+Creates a new user registration.
 
 ---
 
-## 4. Yeni Admin Oluştur
+## 4. Create New Admin
 
 **Endpoint:** `POST /api/Authorization/CreateNewAdmin`
 
-### Parametreler:
+### Parameters:
 
-| Parametre   | Tip      | Açıklama                     |
-| :---------- | :------- | :--------------------------- |
-| `FirstName` | `string` | **Gerekli**. Adminin adı.   |
-| `LastName`  | `string` | **Gerekli**. Adminin soyadı. |
-| `Email`     | `string` | **Gerekli**. Admin e-postası. |
-| `Password`  | `string` | **Gerekli**. Admin şifresi.  |
+| Parameter   | Type      | Description                     |
+| :---------- | :------- | :----------------------------- |
+| `FirstName` | `string` | **Required**. Admin's first name.   |
+| `LastName`  | `string` | **Required**. Admin's last name. |
+| `Email`     | `string` | **Required**. Admin's email address. |
+| `Password`  | `string` | **Required**. Admin's password.  |
 
-### Açıklama:
-Yeni bir admin kullanıcısı oluşturur.
+### Description:
+Creates a new admin user.
 
 ---
 
-## 5. Sepete Ürün Ekle
+## 5. Add Product to Cart
 
 **Endpoint:** `POST /api/Cart/AddToCart`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| `ProductId`| `integer`| **Gerekli**. Eklenecek ürün ID'si. |
-| `Quantity` | `integer`| **Gerekli**. Eklenilecek miktar.   |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| `ProductId`| `integer`| **Required**. ID of the product to be added. |
+| `Quantity` | `integer`| **Required**. Quantity to be added.   |
 
-### Açıklama:
-Kullanıcının sepetine ürün ekler.
+### Description:
+Adds a product to the user's cart.
 
 ---
 
-## 6. Sepetten Ürün Çıkar
+## 6. Remove Product from Cart
 
 **Endpoint:** `POST /api/Cart/RemoveFromCart`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| `ProductId`| `integer`| **Gerekli**. Çıkarılacak ürün ID'si. |
-| `Quantity` | `integer`| **Gerekli**. Çıkarılacak miktar.   |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| `ProductId`| `integer`| **Required**. ID of the product to be removed. |
+| `Quantity` | `integer`| **Required**. Quantity to be removed.   |
 
-### Açıklama:
-Kullanıcının sepetinden ürün çıkarır.
+### Description:
+Removes a product from the user's cart.
 
 ---
 
-## 7. Sepeti Temizle
+## 7. Clear Cart
 
 **Endpoint:** `POST /api/Cart/ClearCart`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| -          | -        | Sepeti temizler.           |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| -          | -        | Clears the cart.           |
 
-### Açıklama:
-Kullanıcının sepetini tamamen temizler.
+### Description:
+Completely clears the user's cart.
 
 ---
 
-## 8. Sepeti Getir
+## 8. Get Cart
 
 **Endpoint:** `GET /api/Cart/GetCart`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| -          | -        | Kullanıcının sepetini getirir. |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| -          | -        | Retrieves the user's cart. |
 
-### Açıklama:
-Kullanıcının mevcut sepetini döndürür.
+### Description:
+Returns the user's current cart.
 
 ---
 
-## 9. Ödeme Yap
+## 9. Make Payment
 
 **Endpoint:** `POST /api/Cart/Checkout`
 
-### Parametreler:
+### Parameters:
 
-| Parametre       | Tip      | Açıklama                     |
-| :-------------- | :------- | :--------------------------- |
-| `Address`       | `string` | **Gerekli**. Teslimat adresi. |
-| `PaymentMethod` | `string` | **Gerekli**. Ödeme yöntemi.   |
-| `CardNumber`    | `string` | **Gerekli**. Kart numarası.    |
-| `ExpiryDate`    | `string` | **Gerekli**. Son kullanma tarihi. |
-| `CVV`           | `string` | **Gerekli**. CVV kodu.         |
-| `CouponCode`    | `string` | İsteğe bağlı. Kupon kodu.     |
+| Parameter       | Type      | Description                     |
+| :-------------- | :------- | :----------------------------- |
+| `Address`       | `string` | **Required**. Delivery address. |
+| `PaymentMethod` | `string` | **Required**. Payment method.   |
+| `CardNumber`    | `string` | **Required**. Card number.    |
+| `ExpiryDate`    | `string` | **Required**. Expiry date. |
+| `CVV`           | `string` | **Required**. CVV code.         |
+| `CouponCode`    | `string` | Optional. Coupon code.     |
 
-### Açıklama:
-Kullanıcının sepetinde bulunan ürünler için ödeme işlemini gerçekleştirir.
+### Description:
+Processes payment for the products in the user's cart.
 
 ---
 
-## 10. Sepet Miktarını Güncelle
+## 10. Update Cart Quantity
 
 **Endpoint:** `POST /api/Cart/UpdateCartQuantity`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| `ProductId`| `integer`| **Gerekli**. Güncellenecek ürün ID'si. |
-| `Quantity` | `integer`| **Gerekli**. Yeni miktar.     |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| `ProductId`| `integer`| **Required**. ID of the product to be updated. |
+| `Quantity` | `integer`| **Required**. New quantity.     |
 
-### Açıklama:
-Kullanıcının sepetindeki ürünün miktarını günceller.
+### Description:
+Updates the quantity of a product in the user's cart.
 
 ---
 
-## 11. Tüm Kategorileri Getir
+## 11. Get All Categories
 
 **Endpoint:** `GET /api/Category/GetAllCategories`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| -          | -        | Tüm kategorileri getirir.    |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| -          | -        | Retrieves all categories.    |
 
-### Açıklama:
-Sistemdeki tüm kategorileri listeler.
+### Description:
+Lists all categories in the system.
 
 ---
 
-## 12. Kategori Oluştur
+## 12. Create Category
 
 **Endpoint:** `POST /api/Category/CreateCategory`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| `Name`     | `string` | **Gerekli**. Kategorinin adı. |
-| `Url`      | `string` | **Gerekli**. Kategorinin URL'si. |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| `Name`     | `string` | **Required**. Name of the category. |
+| `Url`      | `string` | **Required**. URL of the category. |
 
-### Açıklama:
-Yeni bir kategori oluşturur.
+### Description:
+Creates a new category.
 
 ---
 
-## 13. Kategoriyi Güncelle
+## 13. Update Category
 
 **Endpoint:** `PUT /api/Category/UpdateCategory`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| `Id`       | `integer`| **Gerekli**. Güncellenecek kategori ID'si. |
-| `Name`     | `string` | **Gerekli**. Yeni kategori adı.  |
-| `Url`      | `string` | **Gerekli**. Yeni kategori URL'si. |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| `Id`       | `integer`| **Required**. ID of the category to be updated. |
+| `Name`     | `string` | **Required**. New category name.  |
+| `Url`      | `string` | **Required**. New category URL. |
 
-### Açıklama:
-Mevcut bir kategoriyi günceller.
+### Description:
+Updates an existing category.
 
 ---
 
-## 14. Kategoriyi Sil
+## 14. Delete Category
 
 **Endpoint:** `DELETE /api/Category/DeleteCategory`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| `id`       | `integer`| **Gerekli**. Silinecek kategori ID'si. |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| `id`       | `integer`| **Required**. ID of the category to be deleted. |
 
-### Açıklama:
-Belirtilen kategori ID'sine sahip kategoriyi siler.
+### Description:
+Deletes the category with the specified ID.
 
 ---
 
-## 15. Kuponları Getir
+## 15. Get Coupons
 
 **Endpoint:** `GET /admin/api/Coupon/GetAllCoupons`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| -          | -        | Tüm kuponları getirir.      |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| -          | -        | Retrieves all coupons.      |
 
-### Açıklama:
-Sistemdeki tüm kuponları listeler.
+### Description:
+Lists all coupons in the system.
 
 ---
 
-## 16. Aktif Kuponları Getir
+## 16. Get Active Coupons
 
 **Endpoint:** `GET /admin/api/Coupon/GetActiveCoupons`
 
-### Parametreler:
+### Parameters:
 
-| Parametre  | Tip      | Açıklama                     |
-| :--------- | :------- | :--------------------------- |
-| -          | -        | Aktif kuponları getirir.    |
+| Parameter  | Type      | Description                     |
+| :--------- | :------- | :----------------------------- |
+| -          | -        | Retrieves active coupons.    |
 
-### Açıklama:
-Aktif olan kuponları listeler.
-## 17. Kupon Oluştur
+### Description:
+Lists the active coupons.
+
+## 17. Create Coupon
 
 **Endpoint:** `POST /admin/api/Coupon/CreateCoupon`
 
-### Parametreler:
+### Parameters:
 
-| Parametre   | Tip      | Açıklama                     |
-| :---------- | :------- | :--------------------------- |
-| `Code`      | `string` | **Gerekli**. Oluşturulacak kupon kodu. |
-| `Discount`  | `decimal`| **Gerekli**. Kupon indirimi.          |
-| `ExpiryDate`| `DateTime`| **Gerekli**. Kuponun son kullanma tarihi. |
+| Parameter   | Type      | Description                     |
+| :---------- | :------- | :----------------------------- |
+| `Code`      | `string` | **Required**. Coupon code to be created. |
+| `Discount`  | `decimal`| **Required**. Coupon discount.          |
+| `ExpiryDate`| `DateTime`| **Required**. Expiry date of the coupon. |
 
-### Açıklama:
-Yeni bir kupon oluşturur.
+### Description:
+Creates a new coupon.
 
 ---
 
-## 18. Kupon Güncelle
+## 18. Update Coupon
 
 **Endpoint:** `PUT /admin/api/Coupon/UpdateCoupon`
 
-### Parametreler:
+### Parameters:
 
-| Parametre   | Tip      | Açıklama                     |
-| :---------- | :------- | :--------------------------- |
-| `Id`        | `integer`| **Gerekli**. Güncellenecek kupon ID'si. |
-| `Code`      | `string` | **Gerekli**. Yeni kupon kodu.           |
-| `Discount`  | `decimal`| **Gerekli**. Yeni kupon indirimi.       |
-| `ExpiryDate`| `DateTime`| **Gerekli**. Yeni son kullanma tarihi.  |
+| Parameter   | Type      | Description                     |
+| :---------- | :------- | :----------------------------- |
+| `Id`        | `integer`| **Required**. ID of the coupon to be updated. |
+| `Code`      | `string` | **Required**. New coupon code.           |
+| `Discount`  | `decimal`| **Required**. New coupon discount.       |
+| `ExpiryDate`| `DateTime`| **Required**. New expiry date.  |
 
-### Açıklama:
-Belirtilen kuponu günceller.
+### Description:
+Updates the specified coupon.
 
 ---
 
-## 19. Kupon Sil
+## 19. Delete Coupon
 
 **Endpoint:** `DELETE /admin/api/Coupon/DeleteCoupon`
 
-### Parametreler:
+### Parameters:
 
-| Parametre   | Tip      | Açıklama                     |
-| :---------- | :------- | :--------------------------- |
-| `Id`        | `integer`| **Gerekli**. Silinecek kupon ID'si. |
+| Parameter   | Type      | Description                     |
+| :---------- | :------- | :----------------------------- |
+| `Id`        | `integer`| **Required**. ID of the coupon to be deleted. |
 
-### Açıklama:
-Belirtilen kuponu siler.
+### Description:
+Deletes the specified coupon.
 
 ---
 
-## 20. Ürün Oluştur
+## 20. Create Product
 
 **Endpoint:** `POST /admin/api/Product/CreateProduct`
 
-### Parametreler:
+### Parameters:
 
-| Parametre      | Tip      | Açıklama                     |
-| :------------- | :------- | :--------------------------- |
-| `Name`         | `string` | **Gerekli**. Ürün adı.      |
-| `Description`  | `string` | **Gerekli**. Ürün açıklaması. |
-| `Price`        | `decimal`| **Gerekli**. Ürün fiyatı.   |
-| `CategoryId`   | `integer`| **Gerekli**. Ürün kategorisi ID'si. |
-| `StockQuantity`| `integer`| **Gerekli**. Ürün stoğu.    |
+| Parameter      | Type      | Description                     |
+| :------------- | :------- | :----------------------------- |
+| `Name`         | `string` | **Required**. Product name.      |
+| `Description`  | `string` | **Required**. Product description. |
+| `Price`        | `decimal`| **Required**. Product price.   |
+| `CategoryId`   | `integer`| **Required**. ID of the product category. |
+| `StockQuantity`| `integer`| **Required**. Product stock.    |
 
-### Açıklama:
-Yeni bir ürün oluşturur.
+### Description:
+Creates a new product.
 
 ---
 
-## 21. Ürün Güncelle
+## 21. Update Product
 
 **Endpoint:** `PUT /admin/api/Product/UpdateProduct`
 
-### Parametreler:
+### Parameters:
 
-| Parametre      | Tip      | Açıklama                     |
-| :------------- | :------- | :--------------------------- |
-| `Id`           | `integer`| **Gerekli**. Güncellenecek ürün ID'si. |
-| `Name`         | `string` | **Gerekli**. Yeni ürün adı. |
-| `Description`  | `string` | **Gerekli**. Yeni ürün açıklaması. |
-| `Price`        | `decimal`| **Gerekli**. Yeni ürün fiyatı. |
-| `CategoryId`   | `integer`| **Gerekli**. Yeni ürün kategorisi ID'si. |
-| `StockQuantity`| `integer`| **Gerekli**. Yeni ürün stoğu. |
+| Parameter      | Type      | Description                     |
+| :------------- | :------- | :----------------------------- |
+| `Id`           | `integer`| **Required**. ID of the product to be updated. |
+| `Name`         | `string` | **Required**. New product name. |
+| `Description`  | `string` | **Required**. New product description. |
+| `Price`        | `decimal`| **Required**. New product price. |
+| `CategoryId`   | `integer`| **Required**. New product category ID. |
+| `StockQuantity`| `integer`| **Required**. New product stock. |
 
-### Açıklama:
-Belirtilen ürünü günceller.
+### Description:
+Updates the specified product.
 
 ---
 
-## 22. Ürün Sil
+## 22. Delete Product
 
 **Endpoint:** `DELETE /admin/api/Product/DeleteProduct`
 
-### Parametreler:
+### Parameters:
 
-| Parametre      | Tip      | Açıklama                     |
-| :------------- | :------- | :--------------------------- |
-| `Id`           | `integer`| **Gerekli**. Silinecek ürün ID'si. |
+| Parameter      | Type      | Description                     |
+| :------------- | :------- | :----------------------------- |
+| `Id`           | `integer`| **Required**. ID of the product to be deleted. |
 
-### Açıklama:
-Belirtilen ürünü siler.
+### Description:
+Deletes the specified product.
 
 ---
 
-## 23. Ürünleri Getir
+## 23. Get Products
 
 **Endpoint:** `GET /api/Product/GetAllProducts`
 
-### Parametreler:
+### Parameters:
 
-| Parametre      | Tip      | Açıklama                     |
-| :------------- | :------- | :--------------------------- |
-| -              | -        | Tüm ürünleri getirir.       |
+| Parameter      | Type      | Description                     |
+| :------------- | :------- | :----------------------------- |
+| -              | -        | Retrieves all products.       |
 
-### Açıklama:
-Sistemdeki tüm ürünleri listeler.
-
----
+### Description:
+Lists all products in the system.
