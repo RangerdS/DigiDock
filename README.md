@@ -1,6 +1,10 @@
 # DigiDock Management API
 
 The DigiDock Management API provides various endpoints for managing digital products.
+# Postman Documentation
+https://documenter.getpostman.com/view/18847303/2sA3s4mAxg
+
+# Images
 ## Coupon Mail Image
 ![Coupon Mail](CouponMail.jpg)
 ## Order Email Image
