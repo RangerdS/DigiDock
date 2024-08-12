@@ -5,7 +5,6 @@ using DigiDock.Data.Domain;
 using DigiDock.Data.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 
 namespace DigiDock.Business.Command.UserCommands
 {

@@ -1,6 +1,4 @@
-﻿using DigiDock.Base.Entity;
-using DigiDock.Data.Configuration;
-using DigiDock.Data.Domain;
+﻿using DigiDock.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace DigiDock.Data.Context

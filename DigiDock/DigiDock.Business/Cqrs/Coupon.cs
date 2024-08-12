@@ -2,7 +2,6 @@
 using MediatR;
 using DigiDock.Schema.Responses;
 using DigiDock.Schema.Requests;
-using DigiDock.Data.Domain;
 
 namespace DigiDock.Business.Cqrs;
 public record GetAllCouponsQuery() : IRequest<ApiResponse<List<CouponResponse>>>;

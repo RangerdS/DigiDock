@@ -1,17 +1,10 @@
-﻿using AutoMapper;
-using DigiDock.Base.Helpers;
+﻿using DigiDock.Base.Helpers;
 using DigiDock.Base.Responses;
 using DigiDock.Business.Token;
 using DigiDock.Data.Domain;
 using DigiDock.Data.UnitOfWork;
 using DigiDock.Schema.Responses;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static DigiDock.Business.Cqrs.Authorization;
 
 namespace DigiDock.Business.Command.AuthorizationCommands

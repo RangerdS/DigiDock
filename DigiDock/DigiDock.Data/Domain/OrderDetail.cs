@@ -1,10 +1,5 @@
 ﻿using DigiDock.Base.Entity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DigiDock.Data.Domain
 {
@@ -20,6 +15,7 @@ namespace DigiDock.Data.Domain
         public long ProductId { get; set; }
         public Product Product { get; set; }
 
+        public decimal? UnitPrice { get; set; }
         public long Quantity { get; set; }
     }
 }

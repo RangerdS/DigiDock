@@ -1,7 +1,5 @@
 ﻿using DigiDock.Business.Services;
 using DigiDock.Schema.Log;
-using Hangfire;
-using Serilog;
 using System.Diagnostics;
 using System.Text;
 
@@ -55,7 +53,6 @@ namespace DigiDock.Api.MiddleWares
 
         private bool IsHangfireRequest(HttpContext context)
         {
-            // fill here: should it be deleted ??
             // Hangfire job design
             return context.Request.Path.StartsWithSegments("/hangfire");
         }

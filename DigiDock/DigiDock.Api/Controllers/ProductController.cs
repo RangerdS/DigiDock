@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using DigiDock.Business.Cqrs;
 using DigiDock.Schema.Requests;
-using DigiDock.Business.Services;
-using System;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DigiDock.Api.Controllers
@@ -24,7 +21,7 @@ namespace DigiDock.Api.Controllers
 
         [HttpGet("GetAllProducts")]
         [Authorize(Roles = "admin, normal")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public async Task<ApiResponse<List<ProductResponse>>> GetAllProducts()
         {
             var operation = new GetAllProductQuery();

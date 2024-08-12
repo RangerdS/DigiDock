@@ -1,6 +1,5 @@
 ﻿using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
-using DigiDock.Schema.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

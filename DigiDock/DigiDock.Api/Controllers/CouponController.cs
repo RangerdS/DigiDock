@@ -1,14 +1,9 @@
-﻿using Azure;
-using DigiDock.Business.Services;
-using DigiDock.Base.Responses;
+﻿using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
 using DigiDock.Schema.Requests;
-using DigiDock.Schema.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static DigiDock.Business.Cqrs.Authorization;
-using Azure.Core;
 
 namespace DigiDock.Api.Controllers
 {

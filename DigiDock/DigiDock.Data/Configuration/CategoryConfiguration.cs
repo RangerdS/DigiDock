@@ -20,12 +20,6 @@ namespace DigiDock.Data.Configuration
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(c => c.Tags)
-                .HasConversion(
-                    tags => string.Join(',', tags),
-                    tags => tags.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
-                );
-
             builder.HasMany(c => c.ProductCategoryMaps)
                    .WithOne(pc => pc.Category)
                    .HasForeignKey(pc => pc.CategoryId);

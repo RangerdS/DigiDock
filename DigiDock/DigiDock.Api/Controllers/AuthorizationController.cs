@@ -1,5 +1,4 @@
-﻿using DigiDock.Business.Services;
-using DigiDock.Base.Responses;
+﻿using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
 using DigiDock.Schema.Requests;
 using DigiDock.Schema.Responses;
@@ -26,7 +25,6 @@ namespace DigiDock.Api.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        //fill here : [ResponseHeader("MyCustomHeaderInResponse", "POST")]
         public async Task<ApiResponse<AuthorizationResponse>> Login([FromBody] AuthorizationRequest value)
         {
             var operation = new CreateAuthorizationTokenCommand(value, httpContextAccessor.HttpContext.Connection.RemoteIpAddress?.ToString());
@@ -40,6 +38,15 @@ namespace DigiDock.Api.Controllers
         public async Task<ApiResponse> SignIn([FromBody] SignInRequest value)
         {
             var operation = new CreateUserCommand(value);
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [HttpPost("CreateNewAdmin")]
+        [Authorize(Roles = "admin")]
+        public async Task<ApiResponse> CreateNewAdmin([FromBody] SignInRequest value)
+        {
+            var operation = new CreateUserWithRoleCommand(value, "admin");
             var result = await mediator.Send(operation);
             return result;
         }

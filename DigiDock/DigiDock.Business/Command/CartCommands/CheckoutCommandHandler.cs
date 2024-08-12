@@ -1,10 +1,12 @@
-﻿using AutoMapper;
-using DigiDock.Base.Responses;
+﻿using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
+using DigiDock.Business.Services;
 using DigiDock.Data.Domain;
 using DigiDock.Data.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace DigiDock.Business.Command.CartCommands
@@ -13,10 +15,15 @@ namespace DigiDock.Business.Command.CartCommands
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public CheckoutCommandHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+        private readonly EmailQueueService emailQueueService;
+        private readonly IConfiguration configuration;
+
+        public CheckoutCommandHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, EmailQueueService emailQueueService, IConfiguration configuration)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            this.emailQueueService = emailQueueService ?? throw new ArgumentNullException(nameof(emailQueueService));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public async Task<ApiResponse> Handle(CheckoutCommand request, CancellationToken cancellationToken)
@@ -41,12 +48,21 @@ namespace DigiDock.Business.Command.CartCommands
             }
 
             var coupon = await unitOfWork.CouponRepository.FirstOrDefault(c => c.Code == request.Request.CouponCode);
-            if (coupon.IsRedeemed == true) return ApiResponse.ErrorResponse("Invalid or already used coupon.");
+            if (coupon == null && request.Request.CouponCode != null) return ApiResponse.ErrorResponse("Coupon not found.");
+            if (coupon is not null && (coupon.IsRedeemed == true || coupon.ExpiryDate < DateTime.UtcNow)) return ApiResponse.ErrorResponse("Invalid or already used coupon.");
 
             var cardCheckResponse = CheckCard(request.Request.CardNumber, request.Request.ExpiryDate, request.Request.CVV);
-            if (cardCheckResponse != "Card is valid")
+            if (cardCheckResponse != "Card is valid.")
             {
                 return ApiResponse.ErrorResponse(cardCheckResponse);
+            }
+
+            foreach (var orderDetail in cart)
+            {
+                if (orderDetail.Product.Stock < orderDetail.Quantity)
+                {
+                    return ApiResponse.ErrorResponse($"Insufficient stock for product: {orderDetail.Product.Name}");
+                }
             }
 
             decimal totalPrice = cart.Sum(od => od.Quantity * od.Product.Price);
@@ -85,7 +101,11 @@ namespace DigiDock.Business.Command.CartCommands
             foreach (var orderDetail in cart)
             {
                 orderDetail.OrderId = newOrder.Id;
+                orderDetail.UnitPrice = orderDetail.Product.Price;
                 newOrder.OrderDetails.Add(orderDetail);
+
+                orderDetail.Product.Stock -= (int) orderDetail.Quantity;
+                unitOfWork.ProductRepository.Update(orderDetail.Product);
             }
 
             newOrder.CartTotal = totalPrice - newOrder.CouponTotal;
@@ -109,6 +129,13 @@ namespace DigiDock.Business.Command.CartCommands
             }
 
             await unitOfWork.CompleteWithTransactionAsync();
+
+            string emailBody = GenerateOrderEmailBody(user, newOrder);
+
+            emailQueueService.EnqueueEmailTo(
+                user.Email,
+                "Your Order Confirmation",
+                emailBody);
 
             return ApiResponse.SuccessResponse($"Order created successfully. Total: {newOrder.CartTotal}, Earned Points: {earnedPoints}");
         }
@@ -181,6 +208,44 @@ namespace DigiDock.Business.Command.CartCommands
         private bool IsValidCVV(string cvv)
         {
             return Regex.IsMatch(cvv, @"^\d{3,4}$");
+        }
+        private string GenerateOrderEmailBody(User user, Order order)
+        {
+            string logoUrl = configuration["LogoUrl"];
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<html>");
+            sb.AppendLine("<body>");
+            sb.AppendLine($"<div style='text-align: center; margin-bottom: 20px;'>");
+            sb.AppendLine($"<img src='{logoUrl}' alt='DigiDock Logo' style='max-width: 100%; height: auto; width: 150px;' />");
+            sb.AppendLine("</div>");
+            sb.AppendLine("<h1>Order Confirmation</h1>");
+            sb.AppendLine($"<p>Dear {user.FirstName} {user.LastName},</p>");
+            sb.AppendLine("<p>Thank you for your order. Here are your order details:</p>");
+            sb.AppendLine("<ul>");
+            sb.AppendLine($"<li><strong>Order Number:</strong> {order.OrderNumber}</li>");
+            sb.AppendLine($"<li><strong>Total Price:</strong> {order.CartTotal:C}</li>");
+            sb.AppendLine($"<li><strong>Coupon Discount:</strong> {order.CouponTotal:C}</li>");
+            sb.AppendLine($"<li><strong>Net Total Price:</strong> {order.CartTotal - order.CouponTotal:C}</li>");
+            sb.AppendLine("</ul>");
+            sb.AppendLine("<h2>Order Items</h2>");
+            sb.AppendLine("<ul>");
+            foreach (var orderDetail in order.OrderDetails)
+            {
+                sb.AppendLine("<li>");
+                sb.AppendLine($"<strong>Product:</strong> {orderDetail.Product.Name}<br>");
+                sb.AppendLine($"<strong>Quantity:</strong> {orderDetail.Quantity}<br>");
+                sb.AppendLine($"<strong>Unit Price:</strong> {orderDetail.UnitPrice:C}<br>");
+                sb.AppendLine($"<strong>Total:</strong> {orderDetail.Quantity * orderDetail.UnitPrice:C}");
+                sb.AppendLine("</li>");
+            }
+            sb.AppendLine("</ul>");
+            sb.AppendLine("<p>We hope you enjoy your purchase. If you have any questions, feel free to contact us.</p>");
+            sb.AppendLine("<p>Best regards,</p>");
+            sb.AppendLine("<p>The DigiDock Team</p>");
+            sb.AppendLine("</body>");
+            sb.AppendLine("</html>");
+            return sb.ToString();
         }
     }
 }

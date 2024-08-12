@@ -1,14 +1,8 @@
-﻿using DigiDock.Base.Token;
-using DigiDock.Data.Context;
+﻿using DigiDock.Data.Context;
 using DigiDock.Data.Domain;
 using DigiDock.Data.GenericRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DigiDock.Data.UnitOfWork
 {
@@ -24,6 +18,8 @@ namespace DigiDock.Data.UnitOfWork
         public IGenericRepository<Coupon> CouponRepository { get; private set; }
         public IGenericRepository<OrderDetail> OrderDetailRepository { get; private set; }
         public IGenericRepository<Order> OrderRepository { get; private set; }
+        public IGenericRepository<Category> CategoryRepository { get; private set; }
+        public IGenericRepository<ProductCategoryMap> ProductCategoryMapRepository { get; private set; }
 
         public UnitOfWork(DigiDockMsDBContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -37,6 +33,8 @@ namespace DigiDock.Data.UnitOfWork
             CouponRepository = new GenericRepository<Coupon>(this.context, httpContextAccessor);
             OrderDetailRepository = new GenericRepository<OrderDetail>(this.context, httpContextAccessor);
             OrderRepository = new GenericRepository<Order>(this.context, httpContextAccessor);
+            CategoryRepository = new GenericRepository<Category>(this.context, httpContextAccessor);
+            ProductCategoryMapRepository = new GenericRepository<ProductCategoryMap>(this.context, httpContextAccessor);
         }
 
 

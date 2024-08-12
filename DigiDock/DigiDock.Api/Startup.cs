@@ -1,14 +1,12 @@
 ﻿using DigiDock.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
 using Hangfire;
 using DigiDock.Api.MiddleWares;
 using Autofac;
 using Hangfire.SqlServer;
 using DigiDock.Business.Mapper;
 using MediatR;
-using DigiDock.Business.Cqrs;
 using DigiDock.Business.Command.ProductCommands;
 using DigiDock.Data.UnitOfWork;
 using DigiDock.Business.Services;

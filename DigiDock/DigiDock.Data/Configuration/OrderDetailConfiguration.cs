@@ -12,6 +12,10 @@ namespace DigiDock.Data.Configuration
 
             builder.ConfigureBaseEntity();
 
+            builder.Property(x => x.UnitPrice)
+                .IsRequired(false)
+                .HasColumnType("decimal(18,2)");
+
             builder.Property(od => od.Quantity)
                 .IsRequired();
 

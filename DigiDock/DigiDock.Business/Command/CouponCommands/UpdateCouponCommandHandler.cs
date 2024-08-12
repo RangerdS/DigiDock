@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DigiDock.Base.Helpers;
 using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
 using DigiDock.Data.Domain;

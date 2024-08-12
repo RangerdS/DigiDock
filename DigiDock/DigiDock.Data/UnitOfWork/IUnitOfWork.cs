@@ -1,10 +1,5 @@
 ﻿using DigiDock.Data.Domain;
 using DigiDock.Data.GenericRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DigiDock.Data.UnitOfWork
 {
@@ -20,5 +15,7 @@ namespace DigiDock.Data.UnitOfWork
         IGenericRepository<Coupon> CouponRepository { get; }
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Order> OrderRepository { get; }
+        IGenericRepository<Category> CategoryRepository { get; }
+        IGenericRepository<ProductCategoryMap> ProductCategoryMapRepository { get; }
     }
 }

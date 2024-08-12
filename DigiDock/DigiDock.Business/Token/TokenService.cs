@@ -1,14 +1,9 @@
 ﻿using DigiDock.Base.Token;
 using DigiDock.Data.Domain;
-using DigiDock.Data.UnitOfWork;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DigiDock.Business.Token
 {
@@ -51,20 +46,10 @@ namespace DigiDock.Business.Token
             new Claim("UserName", user.FirstName + " " + user.LastName),
             new Claim("UserId", user.Id.ToString()),
             new Claim("Role", user.Role),
-            //new Claim("Status", user.Status.ToString()), // fill here: delete if you dont use
             new Claim("Email", user.Email),
             new Claim(ClaimTypes.Role, user.Role),
             new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}")
         };
-
-            /*if (user.Role == "customer")
-            {
-                claims.Add(new Claim("CustomerId", user.Customer.Id.ToString()));
-                claims.Add(new Claim("CustomerNumber", user.Customer.CustomerNumber.ToString()));
-                claims.Add(new Claim("CustomerName", $"{user.Customer.FirstName} {user.Customer.LastName}"));
-                claims.Add(new Claim("CustomerEmail", user.Customer.Email));
-            }*/ // fill here: delete if you dont use
-
 
             return claims.ToArray();
         }

@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using System.Threading.Tasks;
 
 namespace DigiDock.Business.Services
 {

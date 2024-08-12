@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DigiDock.Base.Responses
+﻿namespace DigiDock.Base.Responses
 {
     public class ApiResponse
     {
@@ -33,7 +27,7 @@ namespace DigiDock.Base.Responses
 
         public static ApiResponse ErrorResponse(string message)
         {
-            return new ApiResponse(500, false, message);
+            return new ApiResponse(400, false, message);
         }
 
         public static ApiResponse ErrorResponse(string message, int statusCode)
@@ -62,7 +56,7 @@ namespace DigiDock.Base.Responses
 
         public static new ApiResponse<T> ErrorResponse(string message)
         {
-            return new ApiResponse<T>(500, false, message, default);
+            return new ApiResponse<T>(400, false, message, default);
         }
 
         public static new ApiResponse<T> ErrorResponse(string message, int statusCode)

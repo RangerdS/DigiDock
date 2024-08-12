@@ -1,11 +1,6 @@
-using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Hangfire;
-using Hangfire.Logging;
 using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.MSSqlServer;
-using System.Configuration;
 
 namespace DigiDock.Api
 {

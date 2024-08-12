@@ -254,6 +254,9 @@ namespace DigiDock.Data.Migrations
                     b.Property<long>("Quantity")
                         .HasColumnType("bigint");
 
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<long>("UpdateUserId")
                         .HasColumnType("bigint");
 

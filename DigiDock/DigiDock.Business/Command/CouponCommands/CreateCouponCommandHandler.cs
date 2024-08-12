@@ -1,18 +1,9 @@
 ﻿using AutoMapper;
-using DigiDock.Base.Helpers;
 using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
-using DigiDock.Business.Services;
 using DigiDock.Data.Domain;
 using DigiDock.Data.UnitOfWork;
-using DigiDock.Schema.Responses;
 using MediatR;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DigiDock.Business.Command.CouponCommands
 {

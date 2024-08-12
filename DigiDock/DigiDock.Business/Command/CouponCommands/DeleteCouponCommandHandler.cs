@@ -1,11 +1,9 @@
-﻿using DigiDock.Base.Helpers;
-using DigiDock.Base.Responses;
+﻿using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
-using DigiDock.Data.Domain;
 using DigiDock.Data.UnitOfWork;
 using MediatR;
 
-namespace DigiDock.Business.Command.ProductCoCouponCommandsmmands
+namespace DigiDock.Business.Command.CouponCommands
 {
     public class DeleteCouponCommandHandler : IRequestHandler<DeleteCouponCommand, ApiResponse>
     {

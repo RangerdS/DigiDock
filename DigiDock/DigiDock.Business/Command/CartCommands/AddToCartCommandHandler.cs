@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DigiDock.Base.Responses;
+﻿using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
 using DigiDock.Data.Domain;
 using DigiDock.Data.UnitOfWork;
@@ -24,6 +23,11 @@ namespace DigiDock.Business.Command.CartCommands
             if (product is null)
             {
                 return ApiResponse.ErrorResponse("Product not found");
+            }
+
+            if (product.Stock < request.Request.Quantity)
+            {
+                return ApiResponse.ErrorResponse("Insufficient stock for the requested product.");
             }
 
             var userIdClaim = httpContextAccessor.HttpContext?.User?.FindFirst("UserId")?.Value;

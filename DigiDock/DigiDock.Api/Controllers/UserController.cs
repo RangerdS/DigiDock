@@ -1,14 +1,9 @@
-﻿using Azure;
-using DigiDock.Business.Services;
-using DigiDock.Base.Responses;
+﻿using DigiDock.Base.Responses;
 using DigiDock.Business.Cqrs;
 using DigiDock.Schema.Requests;
-using DigiDock.Schema.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static DigiDock.Business.Cqrs.Authorization;
-using Azure.Core;
 
 namespace DigiDock.Api.Controllers
 {
@@ -37,6 +32,16 @@ namespace DigiDock.Api.Controllers
         public async Task<ApiResponse> DeleteUser()
         {
             var operation = new DeleteUserCommand();
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+
+        [HttpGet("GetUserPoint")]
+        [Authorize(Roles = "admin, normal")]
+        public async Task<ApiResponse> GetUserPoint()
+        {
+            var operation = new GetUserPointQuery();
             var result = await mediator.Send(operation);
             return result;
         }

@@ -2,11 +2,6 @@
 using DigiDock.Data.Domain;
 using DigiDock.Schema.Requests;
 using DigiDock.Schema.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DigiDock.Business.Mapper
 {
@@ -24,6 +19,13 @@ namespace DigiDock.Business.Mapper
             CreateMap<CouponCreateRequest, Coupon>();
             CreateMap<CouponUpdateRequest, Coupon>();
             CreateMap<Coupon, CouponResponse>();
+
+            CreateMap<Order, OrderResponse>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderDetails));
+            CreateMap<OrderDetail, OrderItemResponse>();
+
+            CreateMap<Category, CategoryResponse>();
+            CreateMap<CategoryRequest, Category>();
         }
     }
 }
