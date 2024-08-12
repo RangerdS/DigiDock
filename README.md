@@ -3,7 +3,8 @@
 The DigiDock Management API provides various endpoints for managing digital products.
 
 ## 1. Publish Coupon Code
-
+## Coupon Mail Image
+![Coupon Mail](CouponMail.jpg)
 **Endpoint:** `POST /admin/api/Advertise/PublishCouponCode`
 
 ### Parameters:
