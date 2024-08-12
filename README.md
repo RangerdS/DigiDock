@@ -7,6 +7,9 @@ The DigiDock Management API provides various endpoints for managing digital prod
 ![Order Email](OrderEmail.jpg)
 ## Welcome Email Image
 ![Welcome Email](WelcomeEmail.jpg)
+## EndPoints
+![Welcome Email](DigiDockApi.jpg)
+![Welcome Email](DigiDockApiP.jpg)
 ## 1. Publish Coupon Code
 
 **Endpoint:** `POST /admin/api/Advertise/PublishCouponCode`
