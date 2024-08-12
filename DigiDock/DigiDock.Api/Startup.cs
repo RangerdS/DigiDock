@@ -106,10 +106,10 @@ public class Startup
         #region Swagger With Auth
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Para Api Management", Version = "v1.0" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "DigiDock Management", Version = "v1.0" });
             var securityScheme = new OpenApiSecurityScheme
             {
-                Name = "Para Management for IT Company",
+                Name = "Online Selling Platform",
                 Description = "Enter JWT Bearer token **_only_**",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
