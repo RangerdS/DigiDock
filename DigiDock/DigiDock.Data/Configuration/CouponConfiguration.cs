@@ -15,7 +15,7 @@ namespace DigiDock.Data.Configuration
             // Alanlar
             builder.Property(c => c.Code)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(10);
 
             builder.Property(c => c.Discount)
                 .IsRequired()

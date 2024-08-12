@@ -20,5 +20,7 @@ namespace DigiDock.Data.Domain
 
         public List<UserPassword> UserPasswords { get; set; }
         public List<UserLogin> UserLogins { get; set; }
+        public List<OrderDetail> OrderDetails{ get; set; }
+        public List<Order> Orders{ get; set; }
     }
 }

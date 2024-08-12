@@ -1,5 +1,4 @@
-﻿using DigiDock.Api.Services;
-using Moq;
+﻿using Moq;
 using Serilog;
 using System;
 using System.Collections.Generic;

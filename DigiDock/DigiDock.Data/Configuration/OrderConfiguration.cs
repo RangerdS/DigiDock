@@ -23,7 +23,8 @@ namespace DigiDock.Data.Configuration
                 .HasMaxLength(9);
 
             builder.Property(o => o.CouponCode)
-                .HasMaxLength(50);
+                .HasMaxLength(10)
+                .IsRequired(false);
 
             builder.Property(o => o.PointTotal)
                 .HasColumnType("decimal(18,2)");
@@ -31,6 +32,10 @@ namespace DigiDock.Data.Configuration
             builder.HasMany(o => o.OrderDetails)
                    .WithOne(od => od.Order)
                    .HasForeignKey(od => od.OrderId);
+
+            builder.HasOne(o => o.User)
+                   .WithMany(u => u.Orders)
+                   .HasForeignKey(od => od.UserId);
         }
     }
 }

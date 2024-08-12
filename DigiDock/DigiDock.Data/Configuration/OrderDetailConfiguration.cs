@@ -15,10 +15,6 @@ namespace DigiDock.Data.Configuration
             builder.Property(od => od.Quantity)
                 .IsRequired();
 
-            builder.Property(od => od.UnitPrice)
-                .IsRequired()
-                .HasColumnType("decimal(18,2)");
-
             builder.HasOne(od => od.Order)
                    .WithMany(o => o.OrderDetails)
                    .HasForeignKey(od => od.OrderId);
@@ -26,6 +22,10 @@ namespace DigiDock.Data.Configuration
             builder.HasOne(od => od.Product)
                    .WithMany(p => p.OrderDetails)
                    .HasForeignKey(od => od.ProductId);
+
+            builder.HasOne(od => od.User)
+                   .WithMany(u => u.OrderDetails)
+                   .HasForeignKey(od => od.UserId);
         }
     }
 }

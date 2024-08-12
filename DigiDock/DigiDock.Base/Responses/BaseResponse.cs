@@ -8,6 +8,6 @@ namespace DigiDock.Base.Responses
 {
     public class BaseResponse
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }

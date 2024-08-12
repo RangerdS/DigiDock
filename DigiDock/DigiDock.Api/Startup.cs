@@ -44,7 +44,7 @@ public class Startup
         #region Json
         services.AddControllers().AddJsonOptions(options =>
         {
-            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.JsonSerializerOptions.WriteIndented = true;
             options.JsonSerializerOptions.PropertyNamingPolicy = null;
         });
@@ -53,7 +53,7 @@ public class Startup
         #region DB Connection
         services.AddDbContext<DigiDockMsDBContext>(options =>
             options.UseSqlServer(
-                Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"),
+                Configuration.GetConnectionString("BACKUP_CONECTION"),
                 sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()
             ));
         #endregion

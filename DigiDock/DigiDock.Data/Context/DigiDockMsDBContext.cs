@@ -21,7 +21,6 @@ namespace DigiDock.Data.Context
             modelBuilder.ApplyConfiguration(new ProductCategoryMapConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
-            modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new CouponConfiguration());
         }
     }

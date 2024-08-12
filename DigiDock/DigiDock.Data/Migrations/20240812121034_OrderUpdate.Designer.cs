@@ -4,6 +4,7 @@ using DigiDock.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigiDock.Data.Migrations
 {
     [DbContext(typeof(DigiDockMsDBContext))]
-    partial class DigiDockMsDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240812121034_OrderUpdate")]
+    partial class OrderUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,8 +210,6 @@ namespace DigiDock.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders", "dbo");
                 });
@@ -592,17 +593,6 @@ namespace DigiDock.Data.Migrations
                     b.ToTable("UserPasswords", "dbo");
                 });
 
-            modelBuilder.Entity("DigiDock.Data.Domain.Order", b =>
-                {
-                    b.HasOne("DigiDock.Data.Domain.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DigiDock.Data.Domain.OrderDetail", b =>
                 {
                     b.HasOne("DigiDock.Data.Domain.Order", "Order")
@@ -689,8 +679,6 @@ namespace DigiDock.Data.Migrations
             modelBuilder.Entity("DigiDock.Data.Domain.User", b =>
                 {
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("UserLogins");
 

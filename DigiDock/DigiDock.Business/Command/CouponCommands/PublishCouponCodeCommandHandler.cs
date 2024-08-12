@@ -61,7 +61,7 @@ namespace DigiDock.Business.Command.CouponCommands
                 </html>";
 
             emailQueueService.EnqueueEmail(
-                "Your New Coupon Code from DigiDock!",
+                "Your New Coupon Code from DigiDock! " + coupon.Code.ToString(),
                 emailBody);
 
             return ApiResponse.SuccessResponse("Coupon published successfully");

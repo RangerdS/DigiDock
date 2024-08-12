@@ -18,5 +18,7 @@ namespace DigiDock.Data.UnitOfWork
         IGenericRepository<UserPassword> UserPasswordRepository { get; }
         IGenericRepository<UserLogin> UserLoginRepository { get; }
         IGenericRepository<Coupon> CouponRepository { get; }
+        IGenericRepository<OrderDetail> OrderDetailRepository { get; }
+        IGenericRepository<Order> OrderRepository { get; }
     }
 }

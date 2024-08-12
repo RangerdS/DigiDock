@@ -52,6 +52,14 @@ namespace DigiDock.Data.Configuration
             builder.HasMany(u => u.UserLogins)
                    .WithOne(ul => ul.User)
                    .HasForeignKey(ul => ul.UserId);
+
+            builder.HasMany(u => u.OrderDetails)
+                   .WithOne(uod => uod.User)
+                   .HasForeignKey(uod => uod.UserId);
+
+            builder.HasMany(u => u.Orders)
+                   .WithOne(uo => uo.User)
+                   .HasForeignKey(uod => uod.UserId);
         }
     }
 }

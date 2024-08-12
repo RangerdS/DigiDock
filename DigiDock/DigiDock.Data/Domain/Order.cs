@@ -1,15 +1,19 @@
 ﻿using DigiDock.Base.Entity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DigiDock.Data.Domain
 {
+    [Table("Users", Schema = "dbo")]
     public class Order : BaseEntity
     {
-        public string OrderNumber { get; set; } // fill here : add configure to max 9 digit
+        public long UserId { get; set; }
+        public User User { get; set; }
+        public string OrderNumber { get; set; } 
         public decimal CartTotal { get; set; }
         public decimal CouponTotal { get; set; }
         public string CouponCode { get; set; }

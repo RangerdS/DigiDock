@@ -76,7 +76,7 @@ namespace DigiDock.Business.Command.ProductCommands
             unitOfWork.ProductRepository.Update(product);
             await unitOfWork.CompleteAsync();
 
-            return ApiResponse.ErrorResponse("Product updated successfully");
+            return ApiResponse.SuccessResponse("Product updated successfully");
         }
     }
 }

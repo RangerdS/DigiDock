@@ -22,6 +22,8 @@ namespace DigiDock.Data.UnitOfWork
         public IGenericRepository<UserPassword> UserPasswordRepository { get; private set; }
         public IGenericRepository<UserLogin> UserLoginRepository { get; private set; }
         public IGenericRepository<Coupon> CouponRepository { get; private set; }
+        public IGenericRepository<OrderDetail> OrderDetailRepository { get; private set; }
+        public IGenericRepository<Order> OrderRepository { get; private set; }
 
         public UnitOfWork(DigiDockMsDBContext context, IHttpContextAccessor httpContextAccessor)
         {
@@ -33,12 +35,22 @@ namespace DigiDock.Data.UnitOfWork
             UserPasswordRepository = new GenericRepository<UserPassword>(this.context, httpContextAccessor);
             UserLoginRepository = new GenericRepository<UserLogin>(this.context, httpContextAccessor);
             CouponRepository = new GenericRepository<Coupon>(this.context, httpContextAccessor);
+            OrderDetailRepository = new GenericRepository<OrderDetail>(this.context, httpContextAccessor);
+            OrderRepository = new GenericRepository<Order>(this.context, httpContextAccessor);
         }
 
 
         public async Task CompleteAsync()
         {
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
 
         public async Task CompleteWithTransactionAsync()
